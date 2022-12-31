@@ -20,17 +20,40 @@ function ShowTodo(){
         }); 
     }, [user.uid]);
 
+
+    // (taskCounter === 1) ? <div className="font-bold text-2xl">{`1 task in this day`}</div> : null
+    // (taskCounter > 1) ? <div className="font-bold text-2xl">{`${taskCounter.length} tasks in this day`}</div> : null
+
     if (data) {
         const keys = Object.keys(data);
+        const taskCounter = [];
+        keys.forEach((key) => {
+            if (value.date === data[key].date){
+                taskCounter.push(data[key]);
+            }
+        });
         return (
-            <div>
-                {keys.map((key) => (
-                    (value.date === data[key].date) ? 
-                    <TodoItem key={uuid()} todo={data[key]} todoID={key}/>
-                    : 
-                    null   
-                ))}
-            </div>
+            <>  
+                <div>
+                    {
+                        (taskCounter.length === 0) ? <div className="font-bold text-2xl">{`empty here..`}</div> : <div></div>
+                    }
+                    {
+                        (taskCounter.length === 1) ? <div className="font-bold text-2xl">{`1 task in this day`}</div> : <div></div>
+                    }
+                    {
+                        (taskCounter.length > 1) ? <div className="font-bold text-2xl">{`${taskCounter.length} tasks in this day`}</div> : null
+                    }
+                </div>
+                <div>
+                    {keys.map((key) => (
+                        (value.date === data[key].date) ? 
+                        <TodoItem key={uuid()} todo={data[key]} todoID={key}/>
+                        : 
+                        null   
+                    ))}
+                </div>
+            </>
         )
     }
     

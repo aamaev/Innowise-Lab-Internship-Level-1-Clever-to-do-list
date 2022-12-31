@@ -15,7 +15,7 @@ function SignIn(){
         e.preventDefault();
         const passwordInput = document.querySelector('.password-input');
         const emailInput = document.querySelector('.email-input');
-        
+
         signInWithEmailAndPassword (auth, email, password)
             .then(() => {
                 toast.success("Successful authentication");
@@ -54,10 +54,11 @@ function SignIn(){
                 <input className="border p-2 focus:outline-none password-input" 
                        type="password"
                        value={password}
+                       autoComplete='on'
                        onChange={(e) => setPassword(e.target.value)}
                        />    
             </div>
-            <button className="border bg-indigo-500 h-12 w-20">Sign in</button>
+            <button className="rounded border border-orange-200 bg-orange-500 px-4 py-2 text-sm font-medium text-white hover:bg-transparent hover:bg-orange-300">Sign in</button>
             </form>
         </div>   
     )

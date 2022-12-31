@@ -11,9 +11,9 @@ function CreateTodo(){
     return (
         <div className="text-center">
             <button 
-                className="rounded border border-indigo-600 bg-indigo-400 w-36 h-12 mt-4"
+                className="rounded-xl border border-orange-200 bg-orange-500 px-12 py-3 text-sm font-medium text-white hover:bg-transparent hover:bg-orange-300"
                 onClick={createTodo}>
-                Add a new task
+                + Add a new task
             </button>
         </div>
     )

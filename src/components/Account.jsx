@@ -47,8 +47,8 @@ function Account(){
     return (
         <div className="m-auto max-w-xl">
             <div className="flex justify-between py-10">
-                <div className="text-2xl font-bold">hello, {user.email}</div>
-                <button className="rounded border border-indigo-600 bg-indigo-400 h-8 w-16 self-center"
+                <div className="text-2xl font-bold self-center">hello, {user.email}</div>
+                <button className="rounded border border-orange-200 bg-orange-500 px-4 py-2 text-sm font-medium text-white hover:bg-transparent hover:bg-orange-300"
                     onClick={logout}>
                 Logout</button>
             </div>

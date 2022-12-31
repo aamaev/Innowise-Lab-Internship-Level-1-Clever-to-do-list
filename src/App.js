@@ -4,6 +4,7 @@ import SignIn from './components/Signin';
 import SignUp from './components/Signup';
 import Account from './components/Account';
 import CreateTask from './components/CreateTask';
+import TodoInfo from './components/TodoInfo';
 
 function App() { 
     return (
@@ -18,6 +19,8 @@ function App() {
                    element={<Account/>} />
             <Route path='/createtask' 
                    element={<CreateTask/>} />
+            <Route path='/todoinfo' 
+                   element={<TodoInfo/>} />
         </Routes>
     )  
 }

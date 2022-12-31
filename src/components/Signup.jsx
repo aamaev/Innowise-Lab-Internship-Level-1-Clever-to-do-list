@@ -44,9 +44,10 @@ function SignUp(){
                 <input className="border p-2" 
                        type="password" 
                        value={password} 
+                       autoComplete='on'
                        onChange={(e) => setPassword(e.target.value)}/>    
             </div>
-            <button className="border bg-indigo-500 h-12 w-20">Sign up</button>
+            <button className="rounded border border-orange-200 bg-orange-500 px-4 py-2 text-sm font-medium text-white hover:bg-transparent hover:bg-orange-300">Sign up</button>
             </form>
         </div>
     )

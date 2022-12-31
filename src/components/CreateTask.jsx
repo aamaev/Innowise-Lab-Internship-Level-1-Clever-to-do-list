@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { ref, set, onValue, update } from "firebase/database";
 import { db } from '../firebase';
 import { auth } from "../firebase";
-import { useNavigate, useLocation, Navigate } from "react-router-dom";
+import { useNavigate, useLocation, Navigate, Link } from "react-router-dom";
 import uuid from "react-uuid";
 import toast, {Toaster} from 'react-hot-toast';
 
@@ -25,7 +25,7 @@ function CreateTask(){
 
     useEffect(() => {
         const subscriber = auth.onAuthStateChanged(onAuthStateChanged);
-        return subscriber; // unsubscribe on unmount
+        return subscriber; 
     });
 
     if (initializing) return null;
@@ -84,8 +84,9 @@ function CreateTask(){
     if (location.state){
         setTask();
         return (
-            <div className="m-auto max-w-xl pt-20">
+            <div className="m-auto max-w-xl pt-10">
                 <Toaster/>
+                <div className="text-xl font-bold mb-3"> <Link to='/account'>&lt; Back </Link></div>
                 <form onSubmit={updateTask}>
                     <div>
                         <p>Enter task title</p>
@@ -110,13 +111,15 @@ function CreateTask(){
                             className="mb-6 form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-30 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none">     
                         </input>
                     </div>
-                <button className=" rounded border border-indigo-600 bg-indigo-600 px-12 py-3 text-sm font-medium text-white hover:bg-transparent hover:bg-indigo-200 focus:outline-none focus:ring active:text-indigo-500">Update</button>
+                <button className="rounded border border-orange-200 bg-orange-500 px-4 py-2 text-sm font-medium text-white hover:bg-transparent hover:bg-orange-300">Update</button>
                 </form>
             </div>
         )
     } else {
         return (
-            <div className="m-auto max-w-xl pt-20">
+            <div className="m-auto max-w-xl pt-10">
+                <Toaster/>
+                <div className="text-xl font-bold mb-3"> <Link to='/account'>&lt; Back </Link></div>
                 <form onSubmit={createTask}>
                     <div>
                         <p>Enter task title</p>
@@ -141,7 +144,7 @@ function CreateTask(){
                             className="mb-6 form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-30 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none">     
                         </input>
                     </div>
-                <button className="rounded border border-indigo-600 bg-indigo-600 px-12 py-3 text-sm font-medium text-white hover:bg-transparent hover:bg-indigo-200 focus:outline-none focus:ring active:text-indigo-500">Save</button>
+                <button className="rounded border border-orange-200 bg-orange-500 px-4 py-2 text-sm font-medium text-white hover:bg-transparent hover:bg-orange-300">Save</button>
                 </form>
             </div>
         ) 

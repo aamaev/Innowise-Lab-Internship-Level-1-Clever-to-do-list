@@ -1,43 +1,22 @@
 import React  from "react";
-import { useAuthState } from "react-firebase-hooks/auth";
 import { useNavigate } from "react-router-dom";
-import { auth, db} from "../firebase";
-import { ref, update, remove } from "firebase/database";
-import { HiOutlineTrash } from 'react-icons/hi';
-import { TbEdit } from 'react-icons/tb';
+import { MdRadioButtonUnchecked } from 'react-icons/md';
+import { MdCheckCircle } from 'react-icons/md';
+
 
 function TodoItem({todo, todoID}){
-    const [user] = useAuthState(auth);
     const navigate = useNavigate();
 
-    const updateStatus = () => {
-        const updates = {};
-        updates['/users/' + user.uid + '/' + todoID + '/status'] = !todo.status;
-        update(ref(db), updates);
-    };
-
-    const deleteTodo = () => {
-        remove(ref(db, '/users/' + user.uid + '/' + todoID));
-    }
-
-    const editTodo = () => {
-        navigate('/createtask', {state: {todoID}});    
+    const showTodoInfo = () => {
+        navigate('/todoinfo', {state: {todoID}});
     }
 
     return(
-        <div className="bg-indigo-100 border border-indigo-500 rounded-2xl p-3 m-5 flex justify-between">
-            <div className="flex">
-                <input type='checkbox' className="w-5 h-12" defaultChecked={todo.status} onClick={updateStatus}/> 
-                <div className="ml-4">
-                    {todo.status ? <div className="text-lg line-through opacity-80">{todo.title}</div> : <div className="font-bold text-lg">{todo.title}</div>}
-                    <div className="italic">{todo.description}</div>
-                </div>
+        <div className="border border-orange-100 rounded-2xl p-3 m-5 flex justify-between hover:bg-orange-100" onClick={showTodoInfo}>
+            <div className="flex my-2">   
+                {todo.status ?  <MdRadioButtonUnchecked size={25} color="orange" className="mt-px"/> : <MdCheckCircle size={25} color="orange" className="mt-px"/>}
+                <div className="text-xl ml-2 text-gray-600">{todo.title}</div>
             </div>
-            <div className="flex items-center">
-                <button className="mt-px" onClick={editTodo}><TbEdit size={25}/></button>
-                <button onClick={deleteTodo}><HiOutlineTrash size={25}/></button> 
-            </div>
-
         </div>
     );
 }
