@@ -7,7 +7,7 @@ import uuid from "react-uuid";
 import toast, {Toaster} from 'react-hot-toast';
 
 function CreateTask(){
-    const [user, setUser] = useState();
+    const [user, setUser] = useState('');
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
     const [date, setDate] = useState('');
@@ -31,7 +31,7 @@ function CreateTask(){
     if (initializing) return null;
 
     if (!user) {
-        <Navigate to='/'/>
+        return <Navigate replace to='/' />
     }
     
     const createTask = (e) => {

@@ -27,13 +27,13 @@ function CreateTask(){
 
     useEffect(() => {
         const subscriber = auth.onAuthStateChanged(onAuthStateChanged);
-        return subscriber; // unsubscribe on unmount
+        return subscriber;
     });
 
     if (initializing) return null;
 
     if (!user) {
-        <Navigate to='/'/>
+        return <Navigate replace to='/' />
     }
     
     const setTask = () => {

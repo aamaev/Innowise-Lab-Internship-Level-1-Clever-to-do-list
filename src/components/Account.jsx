@@ -11,7 +11,7 @@ import 'firebase/compat/firestore';
 import 'firebase/firestore'
 
 function Account(){
-    const [initializing, setInitializing] = useState(true);
+    const [initializing, setInitializing] = useState('true');
     const [user, setUser] = useState();
     const navigate = useNavigate();
     const [date, setDate] = useState('');
@@ -23,13 +23,13 @@ function Account(){
 
     useEffect(() => {
         const subscriber = auth.onAuthStateChanged(onAuthStateChanged);
-        return subscriber; // unsubscribe on unmount
+        return subscriber; 
     });
 
     if (initializing) return null;
 
     if (!user) {
-        <Navigate to='/'/>
+        return <Navigate replace to='/' />
     }
 
     const dateSetter = (currentDate) => setDate(currentDate);
@@ -45,6 +45,7 @@ function Account(){
     }
 
     return (
+       (user &&
         <div className="m-auto max-w-xl">
             <div className="flex justify-between py-10">
                 <div className="text-2xl font-bold self-center">hello, {user.email}</div>
@@ -58,6 +59,7 @@ function Account(){
             </Data.Provider>   
             <CreateTodo/>
         </div>
+        )
     )
 }
 
