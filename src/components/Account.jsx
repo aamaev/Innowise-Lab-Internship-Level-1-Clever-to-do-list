@@ -38,11 +38,12 @@ function Account(){
         date,
         dateSetter
     };
-
+    
     const logout = () => {
         signOut(auth);
         navigate("/signIn");
-    }
+    };
+
 
     return (
        (user &&

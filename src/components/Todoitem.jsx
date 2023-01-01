@@ -1,8 +1,7 @@
-import React  from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
 import { MdRadioButtonUnchecked } from 'react-icons/md';
 import { MdCheckCircle } from 'react-icons/md';
-
 
 function TodoItem({todo, todoID}){
     const navigate = useNavigate();

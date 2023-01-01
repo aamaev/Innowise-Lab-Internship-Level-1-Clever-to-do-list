@@ -6,15 +6,13 @@ function CalendarItem({date, status}){
     const value = React.useContext(Data);
     const currentDay = moment(date);
 
-
-    const showDate = () => {
-        value.dateSetter(date);
+    const showTodos = () => {
+        value.dateSetter(date)
     }
-     
 
     return (
         <button className="inline-block mr-8">
-            <div className=" border border-gray rounded-2xl w-16 h-20 text-center hover:bg-black hover:border-black hover:text-white" onClick={showDate}>
+            <div className=" border border-gray rounded-2xl w-16 h-20 text-center hover:bg-black hover:border-black hover:text-white" onClick={showTodos}>
                 <div className="text-gray-500 mt-2.5" >{currentDay.format('ddd')}</div>
                 <div>{currentDay.format('D')}</div>   
             </div>  

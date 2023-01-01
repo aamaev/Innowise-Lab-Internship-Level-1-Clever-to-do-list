@@ -45,7 +45,7 @@ react-uuid(2.0.0)
 
 In general directory you can see the next files and directories:
 ```
-/src                  all project components
+/src                  all project components: js and css
     /components       
     App.js 
     firebase.json
