@@ -22,8 +22,43 @@ REACT_APP_FIREBASE_STORAGEBUCKET = "..."
 REACT_APP_FIREBASE_MESSAGINGSENDERID = "..."
 REACT_APP_FIREBASE_APPID = "..."
 REACT_APP_FIREBASE_DATABASEURL = "..."
-
 ```
+**modules**\
+firebase:
+```
+npm i firebase
+```
+moment:
+```
+npm i moment
+```
+react-firebase-hooks:
+```
+npm i react-firebase-hooks
+```
+react-hot-toast:
+```
+npm i react-hot-toast
+```
+react-icons:
+```
+npm i react-icons
+```
+react-router-dom:
+```
+npm i react-router-dom
+```
+react-uuid:
+```
+npm i react-uuid
+```
+tailwindcss:
+```
+npm install -D tailwindcss
+```
+
+
+
 
 ## DATABASE SNAPSHOT
 ![img](./db_snapshot.jpg)
