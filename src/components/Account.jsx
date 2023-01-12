@@ -1,66 +1,40 @@
-import React, { useState, useEffect } from "react";
-import { auth } from "../firebase";
+import React, { useState, useContext } from "react";
 import Calendar from "./Calendar";
 import CreateTodo from "./CreateTodo";
 import ShowTodo from "./ShowTodo";
-import Data from "./DataContext";
-import { signOut } from "firebase/auth";
-import { Navigate, useNavigate } from "react-router-dom";
-import 'firebase/compat/auth';
-import 'firebase/compat/firestore';
-import 'firebase/firestore'
+import Data from "../contexts/DataContext";
+import { Navigate } from "react-router-dom";
+import { AuthContext } from "../contexts/AuthContext";
 
-function Account(){
-    const [initializing, setInitializing] = useState('true');
-    const [user, setUser] = useState();
-    const navigate = useNavigate();
+const Account = () => {
+    const {user, logOut} = useContext(AuthContext);
     const [date, setDate] = useState('');
 
-    function onAuthStateChanged(user) {
-        setUser(user);
-        if (initializing) setInitializing(false);
-    }
-
-    useEffect(() => {
-        const subscriber = auth.onAuthStateChanged(onAuthStateChanged);
-        return subscriber; 
-    });
-
-    if (initializing) return null;
-
     if (!user) {
-        return <Navigate replace to='/' />
+        return <Navigate replace to='/signin' />
     }
 
-    const dateSetter = (currentDate) => setDate(currentDate);
-
-    const currentDateValue = {
-        date,
-        dateSetter
-    };
+    const dateSetter = (currentDate) => {
+        setDate(currentDate);
+    }
     
-    const logout = () => {
-        signOut(auth);
-        navigate("/signIn");
-    };
-
-
     return (
-       (user &&
+        user ?
         <div className="m-auto max-w-xl">
             <div className="flex justify-between py-10">
                 <div className="text-2xl font-bold self-center">hello, {user.email}</div>
                 <button className="rounded border border-orange-200 bg-orange-500 px-4 py-2 text-sm font-medium text-white hover:bg-transparent hover:bg-orange-300"
-                    onClick={logout}>
+                    onClick={logOut}>
                 Logout</button>
             </div>
-            <Data.Provider value={currentDateValue}>
+            <Data.Provider value={ {date, dateSetter} }>
                 <Calendar /> 
                 <ShowTodo /> 
             </Data.Provider>   
             <CreateTodo/>
         </div>
-        )
+        :
+        <div className="text-xl font-bold">something wrong..</div>
     )
 }
 

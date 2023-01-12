@@ -1,27 +1,26 @@
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
-import SignIn from './components/Signin';
-import SignUp from './components/Signup';
+import AuthPage from './components/AuthPage';
 import Account from './components/Account';
 import CreateTask from './components/CreateTask';
 import TodoInfo from './components/TodoInfo';
 
-function App() { 
+const App = () => { 
     return (
-        <Routes>
-            <Route path='/' 
-                   element={<SignIn/>} />
-            <Route path='/signUp' 
-                   element={<SignUp/>} />
-            <Route path='/signIn' 
-                   element={<SignIn/>} />
-            <Route path='/account' 
-                   element={<Account/>} />
-            <Route path='/createtask' 
-                   element={<CreateTask/>} />
-            <Route path='/todoinfo' 
-                   element={<TodoInfo/>} />
-        </Routes>
+       <Routes>
+           <Route path='/' 
+                  element={<AuthPage/>} />
+           <Route path='/signup' 
+                  element={<AuthPage/>} />   
+           <Route path='/signin' 
+                  element={<AuthPage/>} />      
+           <Route path='/account' 
+                  element={<Account/>} />
+           <Route path='/createtask' 
+                  element={<CreateTask/>} />
+           <Route path='/todoinfo' 
+                  element={<TodoInfo/>} />
+       </Routes>
     )  
 }
 

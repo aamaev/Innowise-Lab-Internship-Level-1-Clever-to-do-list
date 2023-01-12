@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
-function CreateTodo(){
+const CreateTodo = () => {
     const navigate = useNavigate(); 
 
     function createTodo(){
