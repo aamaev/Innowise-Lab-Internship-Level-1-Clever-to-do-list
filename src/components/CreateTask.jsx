@@ -1,7 +1,7 @@
 import React, { useState, useContext } from "react";
 import { ref, set, onValue, update } from "firebase/database";
 import { db } from '../firebase';
-import { useNavigate, useLocation, Link } from "react-router-dom";
+import { useNavigate, useLocation, Link, Navigate} from "react-router-dom";
 import uuid from "react-uuid";
 import toast, {Toaster} from 'react-hot-toast';
 import { AuthContext } from "../contexts/AuthContext";
@@ -14,6 +14,10 @@ const CreateTask = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const {user} = useContext(AuthContext);
+
+    if (!user) {
+        return <Navigate replace to='/signin' />
+    }
     
     const createTask = (e) => {
         if (title && date){
