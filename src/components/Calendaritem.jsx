@@ -17,15 +17,17 @@ const CalendarItem = ({date, status}) => {
                 <div>{currentDay.format('D')}</div>   
             </div>  
             <div className="flex justify-center">
-            {
-                (status) ?
-                (status.true > 0) ? <div className="w-2 h-2 bg-orange-600 rounded mt-1"></div> : null
-                : <div className="w-2 h-2 mt-1"></div>
+            {(status) ?
+                (status.isDone) ? 
+                <div className="w-2 h-2 bg-orange-600 rounded mt-1"></div> : null
+                : 
+                <div className="w-2 h-2 mt-1"></div>
             }
-            {
-                (status) ?
-                (status.false > 0) ? <div className="w-2 h-2 bg-orange-300 rounded mt-1"></div> : null
-                : <div className="w-2 h-2 mt-1"></div>
+            {(status) ?
+                (status.isNotDone) ? 
+                <div className="w-2 h-2 bg-orange-300 rounded mt-1"></div> : null
+                : 
+                <div className="w-2 h-2 mt-1"></div>
             }
             </div>
         </button>

@@ -22,9 +22,9 @@ const CreateTask = () => {
     const createTask = (e) => {
         if (title && date){
             set(ref(db, `users/${user.uid}/${uuid()}`), {
-                title: title,
-                description: description,
-                date: date,
+                title,
+                description,
+                date,
                 status: false
             });
             navigate('/account');    
@@ -49,9 +49,9 @@ const CreateTask = () => {
 
     const updateTask = (e) => {
         const updateTodo = {
-            title: title,
-            description: description,
-            date: date,
+            title,
+            description,
+            date,
             status: false
         }
         const updates = {};
@@ -64,72 +64,60 @@ const CreateTask = () => {
             toast.error('Please enter task title and date!');
         }
     }
-    
+
+    const locationStateHandler = (e) => {
+        if (location.state) {
+            return updateTask(e);
+        } else {
+            return createTask(e);
+        }
+    }
+
+    const titleHandler = (e) => {
+        setTitle(e.target.value); 
+    }
+
+    const descriptionHandler = (e) => {
+        setDescription(e.target.value)
+    }
+
+    const dateHandler = (e) => {
+        setDate(e.target.value);
+    }
+
     if (location.state){
         setTask();
     }
 
     return (
-        location.state ? 
         <div className="m-auto max-w-xl pt-10">
             <Toaster/>
             <div className="text-xl font-bold mb-3"> <Link to='/account'>&lt; Back </Link></div>
-            <form onSubmit={updateTask}>
+            <form onSubmit={locationStateHandler}>
                 <div>
                     <p>Enter task title</p>
                     <input 
                         type="text"
                         value={title}
-                        onChange={(e) => setTitle(e.target.value)}
+                        onChange={titleHandler}
                         className="mb-6 form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none">
                     </input>
                     <p>Enter task description</p>
                     <textarea
                         placeholder="Your message"
                         value={description}
-                        onChange={(e) => setDescription(e.target.value)}
+                        onChange={descriptionHandler}
                         className="mb-6 form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-30 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none">
                     </textarea>
                     <p>Enter task date to complite</p>
                     <input 
                         type="date" 
                         value={date}
-                        onChange={(e) => setDate(e.target.value)}
+                        onChange={dateHandler}
                         className="mb-6 form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-30 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none">     
                     </input>
                 </div>
-            <button className="rounded border border-orange-200 bg-orange-500 px-4 py-2 text-sm font-medium text-white hover:bg-transparent hover:bg-orange-300">Update</button>
-            </form>
-        </div>
-        :
-        <div className="m-auto max-w-xl pt-10">
-            <Toaster/>
-            <div className="text-xl font-bold mb-3"> <Link to='/account'>&lt; Back </Link></div>
-            <form onSubmit={createTask}>
-                <div>
-                    <p>Enter task title</p>
-                    <input 
-                        type="text"
-                        value={title}
-                        onChange={(e) => setTitle(e.target.value)}
-                        className="mb-6 form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none">
-                    </input>
-                    <p>Enter task description</p>
-                    <textarea
-                        placeholder="Your message"
-                        value={description}
-                        onChange={(e) => setDescription(e.target.value)}
-                        className="mb-6 form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-30 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none">
-                    </textarea>
-                    <p>Enter task date to complite</p>
-                    <input 
-                        type="date" 
-                        value={date}
-                        onChange={(e) => setDate(e.target.value)}
-                        className="mb-6 form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-30 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none">     
-                    </input>
-                </div>
-            <button className="rounded border border-orange-200 bg-orange-500 px-4 py-2 text-sm font-medium text-white hover:bg-transparent hover:bg-orange-300">Save</button>
+            <button className="rounded border border-orange-200 bg-orange-500 px-4 py-2 text-sm font-medium text-white hover:bg-transparent hover:bg-orange-300"> { location.state ? <p>Update</p> : <p>Save</p> } </button>
             </form>
         </div>
     ) 
