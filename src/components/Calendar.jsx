@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../firebase";
 import { ref, onValue} from "firebase/database";
@@ -15,14 +15,16 @@ const Calendar = () => {
     const [user] = useAuthState(auth);
     const [data, setData] = useState('');
     const [days, setDays] = useState(startMonth); 
-    let status = {};
+    const [status, setStatus] = useState([]);
+    const [loaded, setLoaded] = useState(false);
+    const calendar = useRef();
 
     monthSetter(startMonth);
-
-    useEffect(() => {
-        const calendar = document.querySelector('.calendar');
-        calendar.addEventListener('scroll', () => {
-            if (calendar.scrollLeft + calendar.clientWidth  === calendar.scrollWidth) {
+ 
+    const handleScroll = () => {
+        if (calendar.current){
+            const { scrollWidth, scrollLeft, clientWidth } = calendar.current;
+            if (scrollLeft + clientWidth  === scrollWidth) {
                 setDays(() => {
                     const newDays = [...days];
                     const index = newDays.length - 1;
@@ -33,23 +35,25 @@ const Calendar = () => {
                     return newDays;
                 }); 
             }
-        });
-    }, [days]);
+        }
+    }
 
     useEffect(() => {
         onValue(ref(db, 'users/' + user.uid), (snapshot) => {
+            if (loaded) {
+                return;
+            };
             const data = snapshot.val();
             setData(data);
+            setLoaded(true);
         }); 
-    }, [user.uid]);
-
-    if (data){
         const keys = Object.values(data);
-        status = todoStatus(keys);
-    }
+        setStatus(todoStatus(keys));   
+    }, [user.uid, loaded, data]);
+
 
     return (
-        <div className="calendar whitespace-nowrap overflow-auto h-28 w-full mb-8">
+        <div className="calendar whitespace-nowrap overflow-auto h-28 w-full mb-8" ref={calendar} onScroll={handleScroll}>
             {days.map(day => (
                 <CalendarItem 
                     key = { uuid() }

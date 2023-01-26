@@ -1,19 +1,46 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect, useCallback } from "react";
 import { ref, set, onValue, update } from "firebase/database";
 import { db } from '../firebase';
-import { useNavigate, useLocation, Link, Navigate} from "react-router-dom";
+import { useNavigate, Link, Navigate, useParams } from "react-router-dom";
 import uuid from "react-uuid";
 import toast, {Toaster} from 'react-hot-toast';
 import { AuthContext } from "../contexts/AuthContext";
 
 const CreateTask = () => {
-    const [title, setTitle] = useState('');
-    const [description, setDescription] = useState('');
-    const [date, setDate] = useState('');
+    const [todoInfo, setTodoInfo] = useState({
+        title: '',
+        description: '',
+        date: ''
+    });
+    const {title, description, date} = todoInfo;
     const [loaded, setLoaded] = useState(false);
     const navigate = useNavigate();
-    const location = useLocation();
     const {user} = useContext(AuthContext);
+    const {todoID} = useParams();
+
+    const setTask = useCallback(() => {
+        onValue(ref(db, `users/${user.uid}/${todoID}`), (snapshot) => {
+            const data = snapshot.val();
+            if (loaded) {
+                return;
+            }
+            if (data){
+                setTodoInfo({
+                    ...todoInfo,
+                    title: data.title,
+                    description: data.description,
+                    date: data.date
+                })
+                setLoaded(true);
+            }
+        });   
+    }, [loaded, todoID, todoInfo, user.uid]);
+
+    useEffect(() => {
+        if (todoID){
+            setTask();
+        }
+    }, [todoID, setTask]);
 
     if (!user) {
         return <Navigate replace to='/signin' />
@@ -34,19 +61,6 @@ const CreateTask = () => {
         }
     }
 
-    const setTask = () => {
-        onValue(ref(db, `users/${user.uid}/${location.state.todoID}`), (snapshot) => {
-            const data = snapshot.val();
-            if (loaded) return;
-            if (data){
-                setTitle(data.title);
-                setDescription(data.description);
-                setDate(data.date);
-                setLoaded(true);
-            }
-        });   
-    };
-
     const updateTask = (e) => {
         const updateTodo = {
             title,
@@ -56,7 +70,7 @@ const CreateTask = () => {
         }
         const updates = {};
         if (title && date){
-            updates[`/users/${user.uid}/${location.state.todoID}/`] = updateTodo;
+            updates[`/users/${user.uid}/${todoID}/`] = updateTodo;
             update(ref(db), updates);
             navigate('/account');    
         } else {
@@ -65,8 +79,8 @@ const CreateTask = () => {
         }
     }
 
-    const locationStateHandler = (e) => {
-        if (location.state) {
+    const updateStateHandler = (e) => {
+        if (todoID) {
             return updateTask(e);
         } else {
             return createTask(e);
@@ -74,26 +88,31 @@ const CreateTask = () => {
     }
 
     const titleHandler = (e) => {
-        setTitle(e.target.value); 
+        setTodoInfo({
+            ...todoInfo, 
+            title: e.target.value
+        })
     }
 
     const descriptionHandler = (e) => {
-        setDescription(e.target.value)
+        setTodoInfo({
+            ...todoInfo, 
+            description: e.target.value
+        })
     }
 
     const dateHandler = (e) => {
-        setDate(e.target.value);
-    }
-
-    if (location.state){
-        setTask();
+        setTodoInfo({
+            ...todoInfo, 
+            date: e.target.value
+        })
     }
 
     return (
         <div className="m-auto max-w-xl pt-10">
             <Toaster/>
             <div className="text-xl font-bold mb-3"> <Link to='/account'>&lt; Back </Link></div>
-            <form onSubmit={locationStateHandler}>
+            <form onSubmit={updateStateHandler}>
                 <div>
                     <p>Enter task title</p>
                     <input 
@@ -117,7 +136,7 @@ const CreateTask = () => {
                         className="mb-6 form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-30 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none">     
                     </input>
                 </div>
-            <button className="rounded border border-orange-200 bg-orange-500 px-4 py-2 text-sm font-medium text-white hover:bg-transparent hover:bg-orange-300"> { location.state ? <p>Update</p> : <p>Save</p> } </button>
+            <button className="rounded border border-orange-200 bg-orange-500 px-4 py-2 text-sm font-medium text-white hover:bg-transparent hover:bg-orange-300"> { todoID ? <p>Update</p> : <p>Save</p> } </button>
             </form>
         </div>
     ) 

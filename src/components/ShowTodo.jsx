@@ -21,12 +21,7 @@ const ShowTodo = () => {
             if (data) {
                 const keys = Object.keys(data);
                 setKeys(keys);
-                const taskCounter = [];
-                keys.forEach((key) => {
-                    if (value.date === data[key].date){
-                        taskCounter.push(data[key]);    
-                    }
-                });
+                const taskCounter = keys.filter((key) => value.date === data[key].date);
                 setTaskCounter(taskCounter.length);
             }
         }); 

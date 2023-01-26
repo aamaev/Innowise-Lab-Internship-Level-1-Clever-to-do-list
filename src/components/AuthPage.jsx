@@ -1,12 +1,12 @@
 import React, { useState, useContext } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { auth } from '../firebase';
 import { AuthContext } from '../contexts/AuthContext';
+import { SIGN_IN } from '../constants/constants';
 
-const AuthPage = () => {
+const AuthPage = ({type}) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const { pathname } = useLocation();
     const {signIn, signUp} = useContext(AuthContext);
 
     const signInForm = (e) => {
@@ -28,7 +28,7 @@ const AuthPage = () => {
     }
 
     const signHandler = (e) => {
-        if (pathname === '/signin') {
+        if (type === SIGN_IN) {
             return signInForm(e);
         } else {
             return signUpForm(e);
@@ -38,7 +38,7 @@ const AuthPage = () => {
     return (
         <div className="m-auto max-w-xl pt-20">
             <div>
-                {pathname === '/signin' ? 
+                {type === SIGN_IN ? 
                     (<>
                         <h1 className='text-2xl font-bold py-2'>Sign in to your account</h1>
                         <p>Don't have an account yet? <Link to='/signup' className='underline'>Sign up</Link></p>
@@ -68,7 +68,7 @@ const AuthPage = () => {
                         onChange={passwordHandler}
                     />    
                 </div>
-                <button className="rounded border border-orange-200 bg-orange-500 px-4 py-2 text-sm font-medium text-white hover:bg-transparent hover:bg-orange-300"> { pathname === '/signin' ? <p>Sign in</p> : <p>Sign up</p> } </button>
+                <button className="rounded border border-orange-200 bg-orange-500 px-4 py-2 text-sm font-medium text-white hover:bg-transparent hover:bg-orange-300"> { type === SIGN_IN ? <p>Sign in</p> : <p>Sign up</p> } </button>
             </form>
         </div>   
     )

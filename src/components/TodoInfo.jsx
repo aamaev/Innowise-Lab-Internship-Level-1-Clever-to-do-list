@@ -1,64 +1,71 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect, useCallback } from "react";
 import { ref, onValue, update, remove } from "firebase/database";
 import { db } from '../firebase';
-import { useNavigate, useLocation, Navigate, Link } from "react-router-dom";
+import { useNavigate, Navigate, Link, useParams } from "react-router-dom";
 import { HiOutlineTrash } from 'react-icons/hi';
 import { TbEdit } from 'react-icons/tb';
 import { AuthContext } from "../contexts/AuthContext";
 import moment from "moment";
 
 const TodoInfo = () => {
-    const [title, setTitle] = useState('');
-    const [description, setDescription] = useState('');
-    const [date, setDate] = useState('');
-    const [status, setStatus] = useState(false);
+    const [todoInfo, setTodoInfo] = useState({
+        title: '',
+        description: '',
+        date: '',
+        status: false
+    });
+    const {title, description, date, status} = todoInfo;
     const navigate = useNavigate();
-    const location = useLocation();
     const [loaded, setLoaded] = useState(false);
     const {user} = useContext(AuthContext);
+    const {todoID} = useParams();
+
+    const setTask = useCallback(() => {
+        onValue(ref(db, `users/${user.uid}/${todoID}`), (snapshot) => {
+            const data = snapshot.val();
+            if (loaded) {
+                return
+            };
+            if (data){
+                setTodoInfo({
+                    ...todoInfo,
+                    title: data.title,
+                    description: data.description,
+                    date: data.date,
+                    status: data.status
+                });
+                setLoaded(true);
+            }
+        });   
+    }, [loaded, todoID, user.uid, todoInfo]);
+
+    useEffect(() => {
+        if (todoID){
+            setTask();
+        }  
+    }, [todoID, setTask]);
 
     if (!user) {
         return <Navigate replace to='/signin' />
     }
-    
-    const setTask = () => {
-        onValue(ref(db, `users/${user.uid}/${location.state.todoID}`), (snapshot) => {
-            const data = snapshot.val();
-            if (loaded) return;
-            if (data){
-                setTitle(data.title);
-                setDescription(data.description);
-                setDate(data.date);
-                setStatus(data.status);
-                setLoaded(true);
-            }
-        });   
-    };
 
     const deleteTodo = () => {
-        remove(ref(db, '/users/' + user.uid + '/' + location.state.todoID));
+        remove(ref(db, '/users/' + user.uid + '/' + todoID));
         navigate('/account');
     }
 
     const updateStatus = () => {
         const updates = {};
-        updates['/users/' + user.uid + '/' + location.state.todoID + '/status'] = !status;
+        updates['/users/' + user.uid + '/' + todoID + '/status'] = !status;
         update(ref(db), updates);
     };
 
     const updateTodo = () => {
-        if (location.state.todoID) {
-            const todoID = location.state.todoID;
-            navigate('/createTask', {state: {todoID}});
-        }
+        navigate(`/updatetask/${todoID}`);
     }
-
-    if (location.state){
-        setTask();
-    }        
-
+      
     return (
-        location.state ? 
+        todoID ? 
         <div className="m-auto max-w-xl pt-10">
             <div className="text-xl font-bold"> <Link to='/account'>&lt; {moment(date).format('dddd, MMMM Do')} Task </Link></div>
             <div className="my-5">

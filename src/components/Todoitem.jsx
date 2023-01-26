@@ -7,7 +7,7 @@ const TodoItem = ( {todo, todoID} ) => {
     const navigate = useNavigate();
 
     const showTodoInfo = () => {
-        navigate('/todoinfo', {state: { todoID }});
+        navigate(`/todoinfo/${todoID}`);
     }
 
     return(
