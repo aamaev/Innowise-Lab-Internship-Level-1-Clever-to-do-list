@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/Innowise-Lab-Internship-Level-1-Clever-to-do-list/static/css/main.b3a49700.css",
-    "main.js": "/Innowise-Lab-Internship-Level-1-Clever-to-do-list/static/js/main.1a1f03d5.js",
+    "main.js": "/Innowise-Lab-Internship-Level-1-Clever-to-do-list/static/js/main.290df23f.js",
     "index.html": "/Innowise-Lab-Internship-Level-1-Clever-to-do-list/index.html",
     "main.b3a49700.css.map": "/Innowise-Lab-Internship-Level-1-Clever-to-do-list/static/css/main.b3a49700.css.map",
-    "main.1a1f03d5.js.map": "/Innowise-Lab-Internship-Level-1-Clever-to-do-list/static/js/main.1a1f03d5.js.map"
+    "main.290df23f.js.map": "/Innowise-Lab-Internship-Level-1-Clever-to-do-list/static/js/main.290df23f.js.map"
   },
   "entrypoints": [
     "static/css/main.b3a49700.css",
-    "static/js/main.1a1f03d5.js"
+    "static/js/main.290df23f.js"
   ]
 }
